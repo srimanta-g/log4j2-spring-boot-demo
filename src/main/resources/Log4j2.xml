@@ -1,14 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration info="info">
+
+	<Properties>
+		<Property name="LOG_DIR">C:/logs</Property>
+	</Properties>
+
 	<Appenders>
-		<Console  name="LogToConsole" target="SYSTEM_OUT">
+		<Console name="LogToConsole" target="SYSTEM_OUT">
 			<PatternLayout
-				pattern="%d{yyyy-MM-dd HH:mm:ss} [%p] %c{1}:%L - %m%n"/>
+				pattern="%d{yyyy-MM-dd HH:mm:ss} [%p] %c{1}:%L - %m%n" />
 		</Console>
+
+		<RollingFile name="LogToRollingFile"
+			fileName="${LOG_DIR}/application.log"
+			filePattern="${LOG_DIR}/application.%d{dd-MMM-HH.mm.ss}.log"
+			ignoreExceptions="false">
+
+			<PatternLayout
+				pattern="%d{yyyy-MM-dd HH:mm:ss} [%p] %c{1}:%L - %m%n" />
+
+			<Policies>
+				<SizeBasedTriggeringPolicy size="1 KB" />
+			</Policies>
+			<DefaultRolloverStrategy max="5" />
+		</RollingFile>
 	</Appenders>
 	<Loggers>
+	
+		<Logger level="info" name="com.srimanta.Log4j2demo.controller">
+			<AppenderRef ref="LogToRollingFile"/>
+		</Logger>
 		<Root level="info">
-			<AppenderRef ref="LogToConsole"/>
+			<AppenderRef ref="LogToConsole" />
 		</Root>
 	</Loggers>
 </configuration>
